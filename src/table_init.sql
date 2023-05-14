@@ -4,7 +4,7 @@ USE Minitest_week_2;
 CREATE TABLE materials
 (
     matlID        INT AUTO_INCREMENT PRIMARY KEY,
-    material_name VARCHAR(255),
+    material_name VARCHAR(255) NOT NULL UNIQUE,
     unit          VARCHAR(3) check ( unit = UPPER(unit) ),
     price         DOUBLE
 );
