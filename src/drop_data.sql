@@ -1,0 +1,1 @@
+drop database Minitest_week_2;

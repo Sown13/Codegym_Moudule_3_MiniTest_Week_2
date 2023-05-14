@@ -15,8 +15,8 @@ CREATE TABLE inventory
     matlID        INT,
     FOREIGN KEY (matlID) REFERENCES materials (matlID),
     opening_stock INT NOT NULL DEFAULT 0,
-    total_in      INT,
-    total_out     INT
+    total_in      INT DEFAULT 0,
+    total_out     INT DEFAULT 0
 );
 
 CREATE TABLE suppliers
@@ -87,3 +87,6 @@ CREATE TABLE del_detail
     FOREIGN KEY (delID) REFERENCES delivery_notes (delID),
     FOREIGN KEY (matlID) REFERENCES materials (matlID)
 );
+
+
+

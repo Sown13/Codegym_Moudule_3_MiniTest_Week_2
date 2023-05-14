@@ -44,14 +44,18 @@ INSERT INTO order_detail VALUES (default,1,1,50),
                                 (default,2,6,100),
                                 (default,2,7,50),
                                 (default,3,8,20),
-                                (default,3,9,10);
+                                (default,3,9,10),
+                                (default,2,1,20),
+                                (default,3,2,20);
 
 INSERT INTO rec_detail VALUES (default,1,1,50,50,''),
                               (default,1,2,100,100,''),
                               (default,2,6,100,10,''),
                               (default,2,7,50,25,''),
                               (default,3,8,20,400,''),
-                              (default,3,9,10,350,'');
+                              (default,3,9,10,350,''),
+                              (default,2,1,20,60,''),
+                              (default,3,2,20,110,'');
 
 INSERT INTO del_detail VALUES (default,1,1,30,100,''),
                               (default,1,2,100,200,''),
@@ -59,3 +63,23 @@ INSERT INTO del_detail VALUES (default,1,1,30,100,''),
                               (default,2,7,40,50,''),
                               (default,3,8,35,700,''),
                               (default,3,9,20,600,'');
+
+
+-- Update inventory table after insert rec and del notes
+UPDATE inventory
+    INNER JOIN
+    (SELECT rec_detail.matlID, sum(rec_detail.quantity_in) as total_in
+     FROM rec_detail
+     GROUP BY matlID) AS rd_sum
+    ON inventory.matlID = rd_sum.matlID
+SET inventory.total_in = rd_sum.total_in
+WHERE inventory.matlID = rd_sum.matlID;
+
+
+UPDATE inventory
+    INNER JOIN
+        (SELECT del_detail.matlID, sum(del_detail.quantity_out) as total_out
+FROM del_detail
+GROUP BY matlID) AS dd_sum
+ON inventory.matlID = dd_sum.matlID
+SET inventory.total_out = dd_sum.total_out WHERE inventory.matlID = dd_sum.matlID;
